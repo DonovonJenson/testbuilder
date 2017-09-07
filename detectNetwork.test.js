@@ -167,7 +167,9 @@ describe('Discover', function() {
   }
 })(p);
 }
+
 });
+
 
 describe('Maestro', function() {
     var should = chai.should();
@@ -188,9 +190,63 @@ describe('Maestro', function() {
       })
      })(j);
     }
+
    })(i)
   }
 });
 
-describe('should support China UnionPay')
-describe('should support Switch')
+describe('Switch', function(){
+  var should = chai.should();
+  var prefixes = ['4903','4905','4911','4936','564182','633110','6333','6759'];
+  var switchLengths = [16,18,19];
+
+  for (var i = 0; i < prefixes.length;i++){
+    (function(i){
+      for (var j = 0; j < switchLengths.length; j++){
+        (function(j){
+          var testNumbers = '0';
+          while (testNumbers.length !==  switchLengths[j]-prefixes[i].length){
+            testNumbers += '0';
+          };
+          var checkCase = prefixes[i] + testNumbers;
+          it('has a prefix of ' + prefixes[i] + ' and a length of ' + switchLengths[j].toString(), function(){
+          detectNetwork(checkCase).should.equal('Switch');
+        })
+        })(j)
+      }
+
+    })(i)
+  }
+})
+
+describe('China UnionPay', function(){
+  var should = chai.should();
+  var prefixes = ['624','625','626']
+  prefixes = prefixes.concat(addPrefixes(6282,6288));
+  prefixes = prefixes.concat(addPrefixes(622126,622925));
+
+  for (var i = 0; i < prefixes.length; i++){
+        (function(p){
+    for (var j = 16; j <= 19; j++){
+          (function(j){
+      var testNumbers = '0';
+      while (testNumbers.length !==  j-prefixes[i].length){
+        testNumbers += '0';
+      };
+      var checkCase = prefixes[i] + testNumbers;
+      it('has a prefix of ' + prefixes[i] + ' and a length of ' + (j).toString(), function(){
+      detectNetwork(checkCase).should.equal('China UnionPay');
+    })
+  })(j)
+  }
+})(i);
+}
+})
+
+  //Function to loop through ranges and add each prefix
+function addPrefixes(start,end){
+  var list = []
+  for (var i = start; i <= end; i++)
+  list.push(i.toString());
+  return list;
+}

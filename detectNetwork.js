@@ -15,6 +15,15 @@ var detectNetwork = function(cardNumber) {
   //MasterCard always has a prefix of 51, 52, 53, 54, or 55 and a length of 16.
 if (cardNumber.length === 14 && cardNumber.match(/^(38|39)/) ) {
     return 'Diner\'s Club';
+} else if(cardNumber.match(/^49[03|05|11]/) || cardNumber.substr(0,6) === '564182' || cardNumber.substr(0,6) === '633110' || cardNumber.substr(0,4) === '6333' || cardNumber.substr(0,4) === '6759'){
+  if (cardNumber.length === 16 || cardNumber.length === 18 || cardNumber.length === 19){
+    return "Switch";
+  }
+
+} else if(cardNumber.match(/^628[2-8]/) || cardNumber.match(/^62[4-6]/) || (parseInt(cardNumber.substr(0,6))>= 622126 && parseInt(cardNumber.substr(0,6)) <= 622925) ){
+  if (cardNumber.length >= 16 && cardNumber.length <= 19){
+    return "China UnionPay";
+  }
 } else if (cardNumber.length === 15 && cardNumber.match(/^(34|37)/)  ) {
     return 'American Express';
 } else if (cardNumber.length === 16 && cardNumber.match(/^51|52|53|54|55/)){
